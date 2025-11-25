@@ -9,15 +9,126 @@ class GameScreen extends GetView<GameController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('GameScreen'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'GameScreen is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      backgroundColor: Colors.white,
+      body: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 0;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 1;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 2;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            color: Colors.grey,
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 3;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 4;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                Expanded(
+                  child: Obx(
+                    () {
+                      final color = controller.activeColor;
+                      final activeIndex = controller.activeZoneIndex;
+                      final index = 5;
+                      return Container(
+                        color: index == activeIndex.value
+                            ? color.value
+                            : Colors.white,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

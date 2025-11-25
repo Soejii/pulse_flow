@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pulse_flow/infrastructure/navigation/routes.dart';
 
 import 'controllers/home.controller.dart';
 
@@ -13,10 +14,12 @@ class HomeScreen extends GetView<HomeController> {
         title: const Text('HomeScreen'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'HomeScreen is working',
-          style: TextStyle(fontSize: 20),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Get.toNamed(Routes.GAME);
+          },
+          child: Text('Play!'),
         ),
       ),
     );
