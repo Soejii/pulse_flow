@@ -1,1 +1,2 @@
+export 'package:pulse_flow/infrastructure/navigation/bindings/controllers/game.controller.binding.dart'; 
 export 'package:pulse_flow/infrastructure/navigation/bindings/controllers/home.controller.binding.dart'; 
