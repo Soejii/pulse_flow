@@ -76,11 +76,13 @@ class GameController extends GetxController {
       isTrue.value = true;
       realStimuliCount++;
       return Colors.green;
-    } else if (p < 0.40) {
-      print('lure');
-      isTrue.value = false;
-      return const Color(0xFF4CAF60);
-    } else {
+    } 
+    // else if (p < 0.40) {
+    //   print('lure');
+    //   isTrue.value = false;
+    //   return const Color(0xFF4CAF60);
+    // } 
+    else {
       print('distractor');
       isTrue.value = false;
       return _random.nextBool() ? Colors.red : Colors.blue;
