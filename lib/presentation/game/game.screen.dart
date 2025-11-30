@@ -66,7 +66,7 @@ class GameScreen extends GetView<GameController> {
               if (activeIndex.value == index) {
                 controller.playerCount++;
               }
-              if (controller.isStarted == false) {
+              if (controller.isStarted == false && controller.isTrue.value) {
                 controller.startGame();
               }
             },
