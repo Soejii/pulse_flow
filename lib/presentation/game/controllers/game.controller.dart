@@ -10,6 +10,7 @@ class GameController extends GetxController {
   final activeColor = Rxn<Color>();
 
   int playerCount = 0;
+  int realStimuliCount = 0;
   int maxLoop = 20;
   int currentLoop = 0;
   final isTrue = false.obs;
@@ -34,6 +35,7 @@ class GameController extends GetxController {
     isStarted = true;
     playerCount = 0;
     currentLoop = 0;
+    realStimuliCount = 0;
     await _gameLoop();
   }
 
@@ -72,6 +74,7 @@ class GameController extends GetxController {
     if (p < 0.30) {
       print('real');
       isTrue.value = true;
+      realStimuliCount++;
       return Colors.green;
     } else if (p < 0.40) {
       print('lure');
@@ -89,7 +92,7 @@ class GameController extends GetxController {
       AlertDialog(
         title: const Text('Game Finished'),
         content: Text(
-          'You hit $playerCount out of $maxLoop stimuli',
+          'You hit $playerCount out of $realStimuliCount stimuli',
           style: const TextStyle(fontSize: 16),
         ),
         actions: [
