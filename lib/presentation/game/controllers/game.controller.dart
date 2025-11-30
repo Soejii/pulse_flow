@@ -9,17 +9,19 @@ class GameController extends GetxController {
   final activeZoneIndex = Rxn<int>();
   final activeColor = Rxn<Color>();
 
-  final count = 0.obs;
+  int playerCount = 0;
+  int maxLoop = 20;
+  int currentLoop = 0;
+  final isTrue = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    isStarted = true;
   }
 
   @override
   void onReady() {
     super.onReady();
-    _gameLoop();
   }
 
   @override
@@ -28,8 +30,16 @@ class GameController extends GetxController {
     isStarted = false;
   }
 
+  void startGame() async {
+    isStarted = true;
+    playerCount = 0;
+    currentLoop = 0;
+    await _gameLoop();
+  }
+
   Future<void> _gameLoop() async {
     while (isStarted) {
+      print('Current Loop at $currentLoop');
       _showStimulus();
       await Future.delayed(Duration(milliseconds: 1000));
       _hideStimulus();
@@ -44,8 +54,16 @@ class GameController extends GetxController {
   }
 
   _hideStimulus() {
+    currentLoop++;
     activeZoneIndex.value = null;
     activeColor.value = null;
+
+    if (currentLoop >= maxLoop) {
+      isStarted = false;
+      Future.delayed(Duration(milliseconds: 300), () {
+        _showResultDialog();
+      });
+    }
   }
 
   Color _pickColor() {
@@ -53,13 +71,37 @@ class GameController extends GetxController {
 
     if (p < 0.30) {
       print('real');
+      isTrue.value = true;
       return Colors.green;
     } else if (p < 0.40) {
       print('lure');
+      isTrue.value = false;
       return const Color(0xFF4CAF60);
     } else {
       print('distractor');
+      isTrue.value = false;
       return _random.nextBool() ? Colors.red : Colors.blue;
     }
+  }
+
+  void _showResultDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Game Finished'),
+        content: Text(
+          'You hit $playerCount out of $maxLoop stimuli',
+          style: const TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
   }
 }

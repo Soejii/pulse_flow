@@ -61,8 +61,18 @@ class GameScreen extends GetView<GameController> {
         () {
           final color = controller.activeColor;
           final activeIndex = controller.activeZoneIndex;
-          return Container(
-            color: index == activeIndex.value ? color.value : Colors.white,
+          return GestureDetector(
+            onTap: () {
+              if (activeIndex.value == index) {
+                controller.playerCount++;
+              }
+              if (controller.isStarted == false) {
+                controller.startGame();
+              }
+            },
+            child: Container(
+              color: index == activeIndex.value ? color.value : Colors.white,
+            ),
           );
         },
       ),
