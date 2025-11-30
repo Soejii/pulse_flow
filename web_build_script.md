@@ -14,5 +14,5 @@ Copy-Item "build\web\*" "docs\" -Recurse -Force
 
 # 5. Commit and push (change the message if you want)
 git add .
-git commit -m "Update web build"
+git commit -m "chore: updating web build"
 git push
