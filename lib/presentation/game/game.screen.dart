@@ -15,56 +15,17 @@ class GameScreen extends GetView<GameController> {
           Expanded(
             child: Column(
               children: [
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 0;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(0),
                 Container(
                   color: Colors.grey,
                   height: 10,
                 ),
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 1;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(1),
                 Container(
                   color: Colors.grey,
                   height: 10,
                 ),
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 2;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(2),
               ],
             ),
           ),
@@ -75,60 +36,35 @@ class GameScreen extends GetView<GameController> {
           Expanded(
             child: Column(
               children: [
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 3;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(3),
                 Container(
                   color: Colors.grey,
                   height: 10,
                 ),
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 4;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(4),
                 Container(
                   color: Colors.grey,
                   height: 10,
                 ),
-                Expanded(
-                  child: Obx(
-                    () {
-                      final color = controller.activeColor;
-                      final activeIndex = controller.activeZoneIndex;
-                      final index = 5;
-                      return Container(
-                        color: index == activeIndex.value
-                            ? color.value
-                            : Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                zoneBox(5),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget zoneBox(int index) {
+    return Expanded(
+      child: Obx(
+        () {
+          final color = controller.activeColor;
+          final activeIndex = controller.activeZoneIndex;
+          return Container(
+            color: index == activeIndex.value ? color.value : Colors.white,
+          );
+        },
       ),
     );
   }
