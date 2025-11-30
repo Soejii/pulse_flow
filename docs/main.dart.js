@@ -17589,8 +17589,8 @@ _.ax=!1
 _.ay=a
 _.ch=b
 _.CW=c
-_.db=_.cx=0
-_.dx=d
+_.dx=_.cy=_.cx=0
+_.dy=d
 _.oT$=e
 _.DE$=f
 _.oU$=g
@@ -51445,7 +51445,7 @@ this.ax=!1},
 nb(){var s=0,r=A.P(t.H),q=this
 var $async$nb=A.Q(function(a,b){if(a===1)return A.M(b,r)
 while(true)switch(s){case 0:q.ax=!0
-q.db=q.cx=0
+q.cy=q.dx=q.cx=0
 s=2
 return A.R(q.lf(),$async$nb)
 case 2:return A.N(null,r)}})
@@ -51454,7 +51454,7 @@ lf(){var s=0,r=A.P(t.H),q=this,p,o,n,m
 var $async$lf=A.Q(function(a,b){if(a===1)return A.M(b,r)
 while(true)switch(s){case 0:p=t.z,o=q.ch,n=q.ay,m=q.CW
 case 2:if(!q.ax){s=3
-break}A.a1S("Current Loop at "+q.db)
+break}A.a1S("Current Loop at "+q.dx)
 o.sn(n.W8(6))
 m.sn(q.Pd())
 A.a1S("Showing at "+o.k(0))
@@ -51467,22 +51467,22 @@ case 5:s=2
 break
 case 3:return A.N(null,r)}})
 return A.O($async$lf,r)},
-NE(){var s=this;++s.db
+NE(){var s=this;++s.dx
 s.ch.sn(null)
 s.CW.sn(null)
-if(s.db>=20){s.ax=!1
+if(s.dx>=20){s.ax=!1
 A.eR(A.c9(0,300),new A.Mt(s),t.P)}},
-Pd(){var s,r=this.ay,q=r.W7()
-if(q<0.3){A.lk("real")
-this.dx.sn(!0)
-return B.Bg}else{s=this.dx
-if(q<0.4){A.lk("lure")
+Pd(){var s,r=this,q=r.ay,p=q.W7()
+if(p<0.3){A.lk("real")
+r.dy.sn(!0);++r.cy
+return B.Bg}else{s=r.dy
+if(p<0.4){A.lk("lure")
 s.sn(!1)
 return B.wj}else{A.lk("distractor")
 s.sn(!1)
-return r.W6()?B.Bh:B.co}}},
+return q.W6()?B.Bh:B.co}}},
 Qe(){var s=null
-A.afb($.b7(),new A.wb(B.JB,A.a8u("You hit "+this.cx+" out of 20 stimuli",B.HB),A.a([new A.Be(new A.Mu(),s,s,s,s,s,s,!1,s,!0,B.JD,s)],t.G),s),!1,t.z)}}
+A.afb($.b7(),new A.wb(B.JB,A.a8u("You hit "+this.cx+" out of "+this.cy+" stimuli",B.HB),A.a([new A.Be(new A.Mu(),s,s,s,s,s,s,!1,s,!0,B.JD,s)],t.G),s),!1,t.z)}}
 A.Mt.prototype={
 $0(){this.a.Qe()},
 $S:41}
