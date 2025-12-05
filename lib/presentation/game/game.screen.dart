@@ -63,11 +63,8 @@ class GameScreen extends GetView<GameController> {
           final activeIndex = controller.activeZoneIndex;
           return GestureDetector(
             onTap: () {
-              if (activeIndex.value == index && controller.isTrue.value) {
-                controller.playerCount++;
-              }
-              if (controller.isStarted == false) {
-                controller.startGame();
+              if (controller.isRecallPhase.value) {
+                controller.onTapRecallPhase(index);
               }
             },
             child: Container(
