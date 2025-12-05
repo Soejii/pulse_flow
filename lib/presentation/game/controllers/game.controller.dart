@@ -30,7 +30,7 @@ class GameController extends GetxController {
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
   int targetGreenCount = 7;
-  int currentLoop = 0;
+  int currentGreenCount = 0;
 
   int distractorFailStreak = 0;
   double baseDistractorChance = 0.2;
@@ -50,7 +50,7 @@ class GameController extends GetxController {
     playerSequenceList = [];
     activeColor.value = null;
     activeZoneIndex.value = null;
-    currentLoop = 0;
+    currentGreenCount = 0;
     isRecallPhase.value = false;
     distractorFailStreak = 0;
     isStarted = false;
@@ -119,7 +119,7 @@ class GameController extends GetxController {
   _hideColor() {
     activeZoneIndex.value = null;
     activeColor.value = null;
-    if (currentLoop >= targetGreenCount) {
+    if (currentGreenCount >= targetGreenCount) {
       isRecallPhase.value = true;
     }
   }
@@ -133,7 +133,7 @@ class GameController extends GetxController {
     } else {
       print('correct sequence');
       correctSequenceList.add(activeZoneIndex.value ?? 0);
-      currentLoop++;
+      currentGreenCount++;
       return Colors.green;
     }
   }
