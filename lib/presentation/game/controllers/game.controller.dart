@@ -14,7 +14,6 @@ class GameController extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    startGame();
   }
 
   @override
@@ -24,19 +23,25 @@ class GameController extends GetxController {
   }
 
   var isRecallPhase = false.obs;
+  bool isStarted = false;
 
   final _random = Random();
 
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
-  int maxLoop = 7;
+  int targetGreenCount = 7;
   int currentLoop = 0;
+
+  int distractorFailStreak = 0;
+  double baseDistractorChance = 0.2;
+  double distractorIncrement = 0.01;
 
   final activeZoneIndex = Rxn<int>();
   final activeColor = Rxn<Color>();
 
   void startGame() async {
     resetState();
+    isStarted = true;
     _sequenceLoop();
   }
 
@@ -47,6 +52,8 @@ class GameController extends GetxController {
     activeZoneIndex.value = null;
     currentLoop = 0;
     isRecallPhase.value = false;
+    distractorFailStreak = 0;
+    isStarted = false;
   }
 
   Future<void> _sequenceLoop() async {
@@ -87,6 +94,22 @@ class GameController extends GetxController {
     }
   }
 
+  bool psuedoRng() {
+    final chance =
+        (baseDistractorChance + distractorFailStreak * distractorIncrement)
+            .clamp(0.0, 1.0);
+
+    final roll = _random.nextDouble();
+
+    if (roll < chance) {
+      distractorFailStreak = 0;
+      return true;
+    } else {
+      distractorFailStreak++;
+      return false;
+    }
+  }
+
   _showColor() {
     activeZoneIndex.value = _random.nextInt(6);
     activeColor.value = _pickColor();
@@ -96,22 +119,22 @@ class GameController extends GetxController {
   _hideColor() {
     activeZoneIndex.value = null;
     activeColor.value = null;
-    currentLoop++;
-    if (currentLoop >= maxLoop) {
+    if (currentLoop >= targetGreenCount) {
       isRecallPhase.value = true;
     }
   }
 
   Color _pickColor() {
-    final p = _random.nextDouble();
+    final bool isDistractor = psuedoRng();
 
-    if (p < 0.80) {
-      print('correct sequence');
-      correctSequenceList.add(activeZoneIndex.value ?? 0);
-      return Colors.green;
-    } else {
+    if (isDistractor) {
       print('distractor');
       return _random.nextBool() ? Colors.red : Colors.blue;
+    } else {
+      print('correct sequence');
+      correctSequenceList.add(activeZoneIndex.value ?? 0);
+      currentLoop++;
+      return Colors.green;
     }
   }
 
