@@ -29,12 +29,12 @@ class GameController extends GetxController {
 
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
-  int targetGreenCount = 7;
+  int targetGreenCount = 0;
   int currentGreenCount = 0;
 
   int distractorFailStreak = 0;
-  double baseDistractorChance = 0.2;
-  double distractorIncrement = 0.01;
+  double baseDistractorChance = 0.3;
+  double distractorIncrement = 0.1;
 
   final activeZoneIndex = Rxn<int>();
   final activeColor = Rxn<Color>();
@@ -52,6 +52,7 @@ class GameController extends GetxController {
     activeZoneIndex.value = null;
     currentGreenCount = 0;
     isRecallPhase.value = false;
+    targetGreenCount = 4 + _random.nextInt(5);
     distractorFailStreak = 0;
     isStarted = false;
   }
