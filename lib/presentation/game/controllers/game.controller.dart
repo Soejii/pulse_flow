@@ -31,9 +31,9 @@ class GameController extends GetxController {
 
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
-  int targetGreenCount = 3;
+  int targetGreenCount = 5;
   int currentGreenCount = 0;
-  int zoneCount = 6;
+  int zoneCount = 9;
   List<int> remainingTiles = [];
 
   // psuedo rng shi

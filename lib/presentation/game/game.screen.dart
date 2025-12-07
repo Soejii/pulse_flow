@@ -50,6 +50,27 @@ class GameScreen extends GetView<GameController> {
               ],
             ),
           ),
+          Container(
+            color: Colors.grey,
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                zoneBox(6),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                zoneBox(7),
+                Container(
+                  color: Colors.grey,
+                  height: 10,
+                ),
+                zoneBox(8),
+              ],
+            ),
+          ),
         ],
       ),
     );
