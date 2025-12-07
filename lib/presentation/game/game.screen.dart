@@ -80,8 +80,6 @@ class GameScreen extends GetView<GameController> {
     return Expanded(
       child: Obx(
         () {
-          final color = controller.activeColor;
-          final activeIndex = controller.activeZoneIndex;
           return GestureDetector(
             onTap: () {
               if (controller.isStarted == false) {
@@ -92,11 +90,7 @@ class GameScreen extends GetView<GameController> {
               }
             },
             child: Container(
-              color: controller.isRecallPhase.value
-                  ? index == activeIndex.value
-                      ? color.value
-                      : Colors.white
-                  : controller.tileColors[index] ?? Colors.white,
+              color: controller.tileColors[index] ?? Colors.white,
             ),
           );
         },

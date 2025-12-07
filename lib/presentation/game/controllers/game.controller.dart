@@ -41,8 +41,6 @@ class GameController extends GetxController {
   double baseDistractorChance = 0.2;
   double distractorIncrement = 0.01;
 
-  final activeZoneIndex = Rxn<int>();
-  final activeColor = Rxn<Color>();
   var tileColors = <Color?>[].obs;
 
   void startGame() async {
@@ -54,8 +52,6 @@ class GameController extends GetxController {
   void resetState() {
     correctSequenceList = [];
     playerSequenceList = [];
-    activeColor.value = null;
-    activeZoneIndex.value = null;
     currentGreenCount = 0;
     isRecallPhase.value = false;
     distractorFailStreak = 0;
@@ -70,16 +66,13 @@ class GameController extends GetxController {
       await Future.delayed(const Duration(milliseconds: 700));
     }
     isRecallPhase.value = true;
+    tileColors.value = List<Color?>.filled(zoneCount, null);
   }
 
   onTapRecallPhase(int index) async {
-    activeZoneIndex.value = index;
-    activeColor.value = Colors.green;
+    tileColors[index] = Colors.green;
     _checkSequence(index);
     await Future.delayed(Duration(milliseconds: 500));
-    activeZoneIndex.value = null;
-    activeColor.value = null;
-    await Future.delayed(Duration(milliseconds: 300));
   }
 
   _checkSequence(int tappedIndex) {
