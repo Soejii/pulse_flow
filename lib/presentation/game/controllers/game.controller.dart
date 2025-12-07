@@ -8,6 +8,8 @@ class GameController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    tileColors.value = List<Color?>.filled(zoneCount, null);
+    remainingTiles = List.generate(zoneCount, (i) => i);
   }
 
   @override
@@ -29,15 +31,19 @@ class GameController extends GetxController {
 
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
-  int targetGreenCount = 7;
+  int targetGreenCount = 3;
   int currentGreenCount = 0;
+  int zoneCount = 6;
+  List<int> remainingTiles = [];
 
+  // psuedo rng shi
   int distractorFailStreak = 0;
   double baseDistractorChance = 0.2;
   double distractorIncrement = 0.01;
 
   final activeZoneIndex = Rxn<int>();
   final activeColor = Rxn<Color>();
+  var tileColors = <Color?>[].obs;
 
   void startGame() async {
     resetState();
@@ -54,15 +60,16 @@ class GameController extends GetxController {
     isRecallPhase.value = false;
     distractorFailStreak = 0;
     isStarted = false;
+    tileColors.value = List<Color?>.filled(zoneCount, null);
+    remainingTiles = List.generate(zoneCount, (i) => i);
   }
 
   Future<void> _sequenceLoop() async {
-    while (isRecallPhase.value == false) {
+    while (remainingTiles.isNotEmpty) {
       _showColor();
-      await Future.delayed(Duration(milliseconds: 1000));
-      _hideColor();
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 700));
     }
+    isRecallPhase.value = true;
   }
 
   onTapRecallPhase(int index) async {
@@ -94,6 +101,24 @@ class GameController extends GetxController {
     }
   }
 
+  bool _shouldBeGreen() {
+  if (currentGreenCount >= targetGreenCount) {
+    return false;
+  }
+
+  final remainingSlots = remainingTiles.length + 1;
+
+  final remainingGreensNeeded = targetGreenCount - currentGreenCount;
+
+  if (remainingGreensNeeded >= remainingSlots) {
+    return true;
+  }
+
+  final isDistractorFromRng = psuedoRng();
+  return !isDistractorFromRng;
+}
+
+
   bool psuedoRng() {
     final chance =
         (baseDistractorChance + distractorFailStreak * distractorIncrement)
@@ -110,29 +135,31 @@ class GameController extends GetxController {
     }
   }
 
-  _showColor() {
-    activeZoneIndex.value = _random.nextInt(6);
-    activeColor.value = _pickColor();
-    print('Showing at $activeZoneIndex');
-  }
-
-  _hideColor() {
-    activeZoneIndex.value = null;
-    activeColor.value = null;
-    if (currentGreenCount >= targetGreenCount) {
-      isRecallPhase.value = true;
+  void _showColor() {
+    if (remainingTiles.isEmpty) {
+      return;
     }
+
+    final pickIdx = _random.nextInt(remainingTiles.length);
+    final index = remainingTiles.removeAt(pickIdx);
+
+    final color = _pickColor(index);
+
+    tileColors[index] = color;
+    tileColors.refresh();
+
+    print('Showing at $index, color $color');
   }
 
-  Color _pickColor() {
-    final bool isDistractor = psuedoRng();
+  Color _pickColor(int index) {
+  final bool isGreen = _shouldBeGreen();
 
-    if (isDistractor) {
+    if (!isGreen) {
       print('distractor');
       return _random.nextBool() ? Colors.red : Colors.blue;
     } else {
       print('correct sequence');
-      correctSequenceList.add(activeZoneIndex.value ?? 0);
+      correctSequenceList.add(index);
       currentGreenCount++;
       return Colors.green;
     }

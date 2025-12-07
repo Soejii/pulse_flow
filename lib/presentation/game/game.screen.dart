@@ -71,7 +71,11 @@ class GameScreen extends GetView<GameController> {
               }
             },
             child: Container(
-              color: index == activeIndex.value ? color.value : Colors.white,
+              color: controller.isRecallPhase.value
+                  ? index == activeIndex.value
+                      ? color.value
+                      : Colors.white
+                  : controller.tileColors[index] ?? Colors.white,
             ),
           );
         },
