@@ -31,15 +31,15 @@ class GameController extends GetxController {
 
   List<int> correctSequenceList = [];
   List<int> playerSequenceList = [];
-  int targetGreenCount = 5;
+  int targetGreenCount = 0;
   int currentGreenCount = 0;
   int zoneCount = 9;
   List<int> remainingTiles = [];
 
   // psuedo rng shi
   int distractorFailStreak = 0;
-  double baseDistractorChance = 0.2;
-  double distractorIncrement = 0.01;
+  double baseDistractorChance = 0.3;
+  double distractorIncrement = 0.1;
 
   var tileColors = <Color?>[].obs;
 
@@ -55,6 +55,7 @@ class GameController extends GetxController {
     currentGreenCount = 0;
     isRecallPhase.value = false;
     distractorFailStreak = 0;
+    targetGreenCount = 3 + _random.nextInt(6);
     isStarted = false;
     tileColors.value = List<Color?>.filled(zoneCount, null);
     remainingTiles = List.generate(zoneCount, (i) => i);
@@ -95,22 +96,21 @@ class GameController extends GetxController {
   }
 
   bool _shouldBeGreen() {
-  if (currentGreenCount >= targetGreenCount) {
-    return false;
+    if (currentGreenCount >= targetGreenCount) {
+      return false;
+    }
+
+    final remainingSlots = remainingTiles.length + 1;
+
+    final remainingGreensNeeded = targetGreenCount - currentGreenCount;
+
+    if (remainingGreensNeeded >= remainingSlots) {
+      return true;
+    }
+
+    final isDistractorFromRng = psuedoRng();
+    return !isDistractorFromRng;
   }
-
-  final remainingSlots = remainingTiles.length + 1;
-
-  final remainingGreensNeeded = targetGreenCount - currentGreenCount;
-
-  if (remainingGreensNeeded >= remainingSlots) {
-    return true;
-  }
-
-  final isDistractorFromRng = psuedoRng();
-  return !isDistractorFromRng;
-}
-
 
   bool psuedoRng() {
     final chance =
@@ -145,7 +145,7 @@ class GameController extends GetxController {
   }
 
   Color _pickColor(int index) {
-  final bool isGreen = _shouldBeGreen();
+    final bool isGreen = _shouldBeGreen();
 
     if (!isGreen) {
       print('distractor');
