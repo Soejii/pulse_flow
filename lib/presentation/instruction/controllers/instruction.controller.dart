@@ -75,6 +75,17 @@ class InstructionController extends GetxController {
       ],
     ),
     InstructionData(
+      title: 'Memulai Permainan',
+      body:
+          'Untuk memulai permainan, ketuk salah satu kotak setelah skor muncul. Ronde akan langsung dimulai dan warna kotak akan tampil satu per satu.',
+      bullets: [
+        'Ketuk kotak mana saja untuk memulai ronde baru.',
+        'Setelah dimulai, setiap kotak akan muncul sekali dengan warna tertentu.',
+        'Perhatikan hijau, karena itu adalah urutan yang harus kamu ingat.',
+        'Abaikan kotak merah atau biru yang muncul.',
+      ],
+    ),
+    InstructionData(
       title: 'Fase recall dan hasil',
       body:
           'Setelah semua kotak muncul, warna akan direset. Sekarang kamu harus mengetuk kotak sesuai urutan hijau yang tadi muncul.',
