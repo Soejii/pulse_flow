@@ -36,5 +36,10 @@ class Nav {
       page: () => const GameScreen(),
       binding: GameControllerBinding(),
     ),
+    GetPage(
+      name: Routes.INSTRUCTION,
+      page: () => const InstructionScreen(),
+      binding: InstructionControllerBinding(),
+    ),
   ];
 }
