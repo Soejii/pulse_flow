@@ -1,100 +1,69 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import 'controllers/game.controller.dart';
 
 class GameScreen extends GetView<GameController> {
   const GameScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                zoneBox(0),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(1),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(2),
-              ],
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Obx(() {
+                final zoneCount = controller.zoneCount;
+                final crossAxisCount = math.sqrt(zoneCount.value).toInt();
+
+                return AspectRatio(
+                  aspectRatio: 1,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(10),
+                    itemCount: zoneCount.value,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) => _zoneTile(index),
+                  ),
+                );
+              }),
             ),
-          ),
-          Container(
-            color: Colors.grey,
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                zoneBox(3),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(4),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(5),
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.grey,
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                zoneBox(6),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(7),
-                Container(
-                  color: Colors.grey,
-                  height: 10,
-                ),
-                zoneBox(8),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget zoneBox(int index) {
-    return Expanded(
-      child: Obx(
-        () {
-          return GestureDetector(
-            onTap: () {
-              if (controller.isStarted == false) {
-                controller.startGame();
-              }
-              if (controller.isRecallPhase.value) {
-                controller.onTapRecallPhase(index);
-              }
-            },
-            child: Container(
-              color: controller.tileColors[index] ?? Colors.white,
-            ),
-          );
+  Widget _zoneTile(int index) {
+    return Obx(() {
+      return GestureDetector(
+        onTap: () {
+          if (controller.isStarted == false) {
+            controller.startGame();
+          }
+          if (controller.isRecallPhase.value) {
+            controller.onTapRecallPhase(index);
+          }
         },
-      ),
-    );
+        child: Container(
+          decoration: BoxDecoration(
+            color: controller.tileColors[index] ?? Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: Colors.black,
+              width: 1,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

@@ -8,8 +8,8 @@ class GameController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    tileColors.value = List<Color?>.filled(zoneCount, null);
-    remainingTiles = List.generate(zoneCount, (i) => i);
+    tileColors.value = List<Color?>.filled(zoneCount.value, null);
+    remainingTiles = List.generate(zoneCount.value, (i) => i);
   }
 
   @override
@@ -33,8 +33,12 @@ class GameController extends GetxController {
   List<int> playerSequenceList = [];
   int targetGreenCount = 0;
   int currentGreenCount = 0;
-  int zoneCount = 9;
+  var zoneCount = 9.obs;
   List<int> remainingTiles = [];
+
+  int currentLevel = 1;
+  List<int> zoneCountList = [9, 16, 25, 36];
+  final targetGreenCountRange = [(3, 6), (5, 9), (7, 13), (10, 18)];
 
   // psuedo rng shi
   int distractorFailStreak = 0;
@@ -44,21 +48,34 @@ class GameController extends GetxController {
   var tileColors = <Color?>[].obs;
 
   void startGame() async {
-    resetState();
+    resetRunState();
+    _reinitBoard();
     isStarted = true;
     _sequenceLoop();
   }
 
-  void resetState() {
+  void resetRunState() {
     correctSequenceList = [];
     playerSequenceList = [];
     currentGreenCount = 0;
     isRecallPhase.value = false;
     distractorFailStreak = 0;
-    targetGreenCount = 3 + _random.nextInt(6);
+    final range = targetGreenCountRange[currentLevel - 1];
+    targetGreenCount = range.$1 + _random.nextInt(range.$2 - range.$1 + 1);
     isStarted = false;
-    tileColors.value = List<Color?>.filled(zoneCount, null);
-    remainingTiles = List.generate(zoneCount, (i) => i);
+  }
+
+  void _reinitBoard() {
+    tileColors.value = List<Color?>.filled(zoneCount.value, null);
+    remainingTiles = List.generate(zoneCount.value, (i) => i);
+  }
+
+  void setLevel(int levelIndex) {
+    currentLevel = levelIndex;
+    zoneCount.value = zoneCountList[levelIndex];
+    resetRunState();
+    _reinitBoard();
+    isStarted = false;
   }
 
   Future<void> _sequenceLoop() async {
@@ -67,7 +84,7 @@ class GameController extends GetxController {
       await Future.delayed(const Duration(milliseconds: 700));
     }
     isRecallPhase.value = true;
-    tileColors.value = List<Color?>.filled(zoneCount, null);
+    tileColors.value = List<Color?>.filled(zoneCount.value, null);
   }
 
   onTapRecallPhase(int index) async {
@@ -169,7 +186,8 @@ class GameController extends GetxController {
         actions: [
           TextButton(
             onPressed: () {
-              resetState();
+              resetRunState();
+              _reinitBoard();
               Get.back();
             },
             child: const Text('OK'),
@@ -191,7 +209,8 @@ class GameController extends GetxController {
         actions: [
           TextButton(
             onPressed: () {
-              resetState();
+              resetRunState();
+              _reinitBoard();
               Get.back();
             },
             child: const Text('OK'),
