@@ -36,6 +36,8 @@ class GameController extends GetxController {
   var zoneCount = 9.obs;
   List<int> remainingTiles = [];
 
+  int currentWinning = 0;
+  int needsToWin = 3;
   int currentLevel = 1;
   List<int> zoneCountList = [9, 16, 25, 36];
   final targetGreenCountRange = [(3, 6), (5, 9), (7, 13), (10, 18)];
@@ -72,7 +74,7 @@ class GameController extends GetxController {
 
   void setLevel(int levelIndex) {
     currentLevel = levelIndex;
-    zoneCount.value = zoneCountList[levelIndex];
+    zoneCount.value = zoneCountList[levelIndex - 1];
     resetRunState();
     _reinitBoard();
     isStarted = false;
@@ -98,9 +100,11 @@ class GameController extends GetxController {
       if (correctSequenceList[playerSequenceList.length] == tappedIndex) {
         playerSequenceList.add(tappedIndex);
         if (correctSequenceList.length == playerSequenceList.length) {
+          currentWinning++;
           _showSuccessDialog();
         }
       } else {
+        currentWinning = 0;
         _showFailedDialog();
       }
     } else {
@@ -178,14 +182,20 @@ class GameController extends GetxController {
   void _showSuccessDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('Game Finished'),
+        title: const Text('Sesi Berakhir'),
         content: Text(
-          'You Memorized Everything!',
+          currentWinning == needsToWin
+              ? 'Lanjut Ke Level Berikutnya?'
+              : 'Anda Menang $currentWinning dari $needsToWin sesi yang ada',
           style: const TextStyle(fontSize: 16),
         ),
         actions: [
           TextButton(
             onPressed: () {
+              if (currentWinning == needsToWin) {
+                setLevel(currentLevel + 1);
+                currentWinning = 0;
+              }
               resetRunState();
               _reinitBoard();
               Get.back();
