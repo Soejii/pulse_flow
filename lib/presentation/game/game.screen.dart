@@ -17,22 +17,34 @@ class GameScreen extends GetView<GameController> {
           children: [
             Center(
               child: Obx(() {
-                final zoneCount = controller.zoneCount;
-                final crossAxisCount = math.sqrt(zoneCount.value).toInt();
+                final zoneCount = controller.zoneCount.value;
+                final crossAxisCount = math.sqrt(zoneCount).toInt();
 
-                return AspectRatio(
-                  aspectRatio: 1,
-                  child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(10),
-                    itemCount: zoneCount.value,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (context, index) => _zoneTile(index),
-                  ),
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    final maxWidth = constraints.maxWidth;
+                    final boardSize = maxWidth.clamp(300.0, 600.0);
+
+                    return SizedBox(
+                      width: boardSize,
+                      height: boardSize,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(10),
+                          itemCount: zoneCount,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                          ),
+                          itemBuilder: (context, index) => _zoneTile(index),
+                        ),
+                      ),
+                    );
+                  },
                 );
               }),
             ),
