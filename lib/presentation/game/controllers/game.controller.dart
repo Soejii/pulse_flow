@@ -16,6 +16,7 @@ class GameController extends GetxController {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
+    _instructionDialog();
   }
 
   @override
@@ -180,17 +181,25 @@ class GameController extends GetxController {
   }
 
   void _showSuccessDialog() {
+    if (Get.context == null) return;
+
     Get.dialog(
       AlertDialog(
-        title: const Text('Sesi Berakhir'),
+        title: Text(
+          'Sesi Berakhir',
+          style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+        ),
         content: Text(
           currentWinning == needsToWin
               ? 'Lanjut Ke Level Berikutnya?'
               : 'Anda Menang $currentWinning dari $needsToWin sesi yang ada',
-          style: const TextStyle(fontSize: 16),
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
         ),
         actions: [
-          TextButton(
+          ElevatedButton(
             onPressed: () {
               if (currentWinning == needsToWin) {
                 setLevel(currentLevel + 1);
@@ -200,7 +209,18 @@ class GameController extends GetxController {
               _reinitBoard();
               Get.back();
             },
-            child: const Text('OK'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00E676),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 10,
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
@@ -209,21 +229,80 @@ class GameController extends GetxController {
   }
 
   void _showFailedDialog() {
+    if (Get.context == null) return;
+
     Get.dialog(
       AlertDialog(
-        title: const Text('Game Finished'),
+        title: Text(
+          'Permainan Selesai',
+          style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+        ),
         content: Text(
-          'You Memorized ${playerSequenceList.length} / ${correctSequenceList.length}',
-          style: const TextStyle(fontSize: 16),
+          'Kamu Mengingat ${playerSequenceList.length} dari ${correctSequenceList.length}',
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
         ),
         actions: [
-          TextButton(
+          ElevatedButton(
             onPressed: () {
               resetRunState();
               _reinitBoard();
               Get.back();
             },
-            child: const Text('OK'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00E676),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 10,
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  void _instructionDialog() {
+    if (Get.context == null) return;
+
+    Get.dialog(
+      AlertDialog(
+        title: Text(
+          'Perhatian!',
+          style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+        ),
+        content: Text(
+          'Ketuk Dimana Saja Dalam Kotak Untuk Memulai Permainan',
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Get.back();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00E676),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 10,
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
