@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pulse_flow/presentation/home/home.screen.dart';
 import 'package:pulse_flow/shared/app_color.dart';
+import 'package:pulse_flow/shared/star_background.dart';
 
 import 'controllers/bottom_navigation.controller.dart';
 
@@ -29,6 +30,12 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
       backgroundColor: AppColor.backgroundDark,
       body: Stack(
         children: [
+          const IgnorePointer(
+            child: StarBackground(
+              starCount: 90,
+              speed: 0.22,
+            ),
+          ),
           Obx(
             () => IndexedStack(
               index: controller.shellIndex.value,
