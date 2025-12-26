@@ -13,10 +13,11 @@ class ProgressModel {
 
   factory ProgressModel.initial() {
     return const ProgressModel(
-        currentLevel: 1,
-        currentSession: 1,
-        highestUnlockedLevel: 1,
-        isFirstTime: true);
+      currentLevel: 1,
+      currentSession: 1,
+      highestUnlockedLevel: 1,
+      isFirstTime: true,
+    );
   }
 
   ProgressModel copyWith({
@@ -37,15 +38,16 @@ class ProgressModel {
         'current_level': currentLevel,
         'current_session': currentSession,
         'highest_unlocked_level': highestUnlockedLevel,
+        'is_first_time': isFirstTime,
       };
 
   factory ProgressModel.fromJson(Map<String, dynamic> json) {
     return ProgressModel(
-      currentLevel: (json['currentLevel'] as num?)?.toInt() ?? 1,
-      currentSession: (json['currentSession'] as num?)?.toInt() ?? 1,
+      currentLevel: (json['current_level'] as num?)?.toInt() ?? 1,
+      currentSession: (json['current_session'] as num?)?.toInt() ?? 1,
       highestUnlockedLevel:
-          (json['highestUnlockedLevel'] as num?)?.toInt() ?? 1,
-      isFirstTime: true,
+          (json['highest_unlocked_level'] as num?)?.toInt() ?? 1,
+      isFirstTime: (json['is_first_time'] ?? true ),
     );
   }
 }

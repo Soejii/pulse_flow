@@ -16,6 +16,7 @@ class ProgressController extends GetxController {
 
   Future<void> _load() async {
     state.value = await _storage.load();
+    print('loaded ${state.value}');
     isLoaded.value = true;
   }
 

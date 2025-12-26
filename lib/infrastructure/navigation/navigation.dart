@@ -46,5 +46,10 @@ class Nav {
       page: () => BottomNavigationScreen(),
       binding: BottomNavigationControllerBinding(),
     ),
+    GetPage(
+      name: Routes.GATE,
+      page: () =>  GateScreen(),
+      binding: GateControllerBinding(),
+    ),
   ];
 }
