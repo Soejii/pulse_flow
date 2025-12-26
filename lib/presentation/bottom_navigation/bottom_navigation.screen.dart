@@ -26,6 +26,7 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.backgroundDark,
       body: Stack(
         children: [
           Obx(
@@ -60,7 +61,7 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
         height: 64,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: AppColor().themeDarkBlue,
+          color: AppColor.themeDarkBlue,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,8 +104,7 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
               child: Icon(
                 icon,
                 size: 26,
-                color:
-                    isSelected ? AppColor().neutralGrey : AppColor().themeDark,
+                color: isSelected ? AppColor.neutralGrey : AppColor.themeDark,
               ),
             ),
           );

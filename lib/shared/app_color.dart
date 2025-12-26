@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  final themeBlue = hex('225577');
-  final themeGreen = hex('00A682');
-  final themeRed = hex('E45651');
-  final themeDarkBlue = hex('212835');
-  final themeDarkerBlue = hex('12161F');
-  final themeDark = hex('0C1017');
+  // Brand
+  static const themeBlue = Color(0xFF225577);
+  static const themeGreen = Color(0xFF00A682);
+  static const themeRed = Color(0xFFE45651);
 
-  final backgroundDark = hex('0C1017');
+  // Surfaces
+  static const themeDarkBlue = Color(0xFF212835);
+  static const themeDarkerBlue = Color(0xFF12161F);
+  static const themeDark = Color(0xFF0C1017);
 
-  final textPrimary = hex('E3E3E3');
-  final textSecondary = hex('808080');
+  // Background
+  static const backgroundDark = Color(0xFF0C1017);
 
-  final neutralGrey = hex('ADADAD');
-}
+  // Text
+  static const textPrimary = Color(0xFFE3E3E3);
+  static const textSecondary = Color(0xFF808080);
 
-Color hex(String hex) {
-  final clean = hex.replaceAll('#', '');
-  return Color(int.parse('FF$clean', radix: 16));
+  // Neutral
+  static const neutralGrey = Color(0xFFADADAD);
 }
