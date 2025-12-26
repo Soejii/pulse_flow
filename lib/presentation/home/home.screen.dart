@@ -78,9 +78,11 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                     SizedBox(height: 6),
-                    _progressRow(
-                      "Unlocked",
-                      "Up to Level ${progress.state.value.highestUnlockedLevel}",
+                    Obx(
+                      () => _progressRow(
+                        "Unlocked",
+                        "Up to Level ${progress.state.value.highestUnlockedLevel}",
+                      ),
                     ),
                   ],
                 ),

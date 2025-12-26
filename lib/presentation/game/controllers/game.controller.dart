@@ -2,14 +2,26 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class GameController extends GetxController {
+  final progressController = Get.find<ProgressController>();
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     tileColors.value = List<Color?>.filled(zoneCount.value, null);
     remainingTiles = List.generate(zoneCount.value, (i) => i);
+
+    final s = progressController.state.value;
+
+    currentLevel = s.currentLevel;
+    currentWinning = s.currentSession - 1;
+    zoneCount.value = zoneCountList[currentLevel - 1];
+
+    resetRunState();
+    _reinitBoard();
   }
 
   @override
@@ -73,8 +85,9 @@ class GameController extends GetxController {
     remainingTiles = List.generate(zoneCount.value, (i) => i);
   }
 
-  void setLevel(int levelIndex) {
+  void setLevel(int levelIndex) async {
     currentLevel = levelIndex;
+    await progressController.setCurrentLevel(levelIndex);
     zoneCount.value = zoneCountList[levelIndex - 1];
     resetRunState();
     _reinitBoard();
@@ -96,12 +109,13 @@ class GameController extends GetxController {
     await Future.delayed(Duration(milliseconds: 500));
   }
 
-  _checkSequence(int tappedIndex) {
+  _checkSequence(int tappedIndex) async {
     if (playerSequenceList.isNotEmpty) {
       if (correctSequenceList[playerSequenceList.length] == tappedIndex) {
         playerSequenceList.add(tappedIndex);
         if (correctSequenceList.length == playerSequenceList.length) {
           currentWinning++;
+          await progressController.setSession(currentWinning);
           _showSuccessDialog();
         }
       } else {
@@ -205,6 +219,17 @@ class GameController extends GetxController {
                 setLevel(currentLevel + 1);
                 currentWinning = 0;
               }
+
+              progressController.setProgress(
+                progressController.state.value.copyWith(
+                  currentLevel: currentLevel,
+                  currentSession: currentWinning + 1,
+                  highestUnlockedLevel: max(
+                    progressController.state.value.highestUnlockedLevel,
+                    currentLevel,
+                  ),
+                ),
+              );
               resetRunState();
               _reinitBoard();
               Get.back();
