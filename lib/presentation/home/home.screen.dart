@@ -252,7 +252,10 @@ _levelDialog() {
                                 ),
                               );
                               Get.back();
-                              Get.toNamed(Routes.GAME);
+                              Get.toNamed(
+                                Routes.GAME,
+                                arguments: false,
+                              );
                             },
                           ),
                         );
