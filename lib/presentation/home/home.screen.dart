@@ -111,46 +111,48 @@ class HomeScreen extends GetView<HomeController> {
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        //todo makes a pop up
-                      },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColor.textPrimary,
-                        side: BorderSide(
-                          color: AppColor.textSecondary,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: const Text("Level select"),
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () => Get.toNamed(Routes.GAME),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColor.themeRed,
+                    foregroundColor: AppColor.textPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        // todo continue using saved progress
-                      },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColor.textPrimary,
-                        side: BorderSide(
-                          color: AppColor.textSecondary,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: const Text("Continue"),
+                  child: const Text(
+                    "HARD MODE",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
                     ),
                   ),
-                ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 56,
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    _levelDialog();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColor.textPrimary,
+                    side: BorderSide(
+                      color: AppColor.textSecondary,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text("Level select"),
+                ),
               ),
             ],
           ),
@@ -183,5 +185,119 @@ _progressRow(
         ),
       ),
     ],
+  );
+}
+
+_levelDialog() {
+  final progress = Get.find<ProgressController>();
+
+  return Get.dialog(
+    barrierDismissible: true,
+    Dialog(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: AppColor.themeDarkerBlue,
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 24,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Select Level',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: AppColor.textPrimary,
+                ),
+              ),
+              Obx(
+                () {
+                  final state = progress.state.value;
+
+                  return Column(
+                    children: List.generate(
+                      3,
+                      (i) {
+                        final level = i + 1;
+                        final isLocked = level > state.highestUnlockedLevel;
+                        final isCurrent = level == state.currentLevel;
+
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                          ),
+                          child: _levelTile(
+                            level,
+                            [9, 16, 25][i],
+                            isLocked,
+                            isCurrent,
+                            () async {
+                              if (isLocked) return;
+                              await progress.setProgress(
+                                state.copyWith(
+                                  currentLevel: level,
+                                  currentSession: 1,
+                                ),
+                              );
+                              Get.back();
+                              Get.toNamed(Routes.GAME);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+_levelTile(
+  final int level,
+  final int gridSize,
+  final bool locked,
+  final bool active,
+  final VoidCallback onTap,
+) {
+  return InkWell(
+    onTap: locked ? null : onTap,
+    borderRadius: BorderRadius.circular(12),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: active ? AppColor.themeGreen : AppColor.themeDarkerBlue,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: locked ? AppColor.textSecondary : AppColor.textSecondary),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Level $level  ·  $gridSize tiles',
+              style: TextStyle(
+                color: locked ? AppColor.textSecondary : AppColor.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          if (locked)
+            const Icon(Icons.lock, color: AppColor.textSecondary)
+          else if (active)
+            const Icon(Icons.check_circle, color: AppColor.themeGreen),
+        ],
+      ),
+    ),
   );
 }
