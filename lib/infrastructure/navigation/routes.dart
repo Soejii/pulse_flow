@@ -6,4 +6,5 @@ class Routes {
   static const GAME = '/game';
   static const HOME = '/home';
   static const INSTRUCTION = '/instruction';
+  static const BOTTOM_NAVIGATION = '/bottom-navigation';
 }

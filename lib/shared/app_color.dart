@@ -12,6 +12,8 @@ class AppColor {
 
   final textPrimary = hex('E3E3E3');
   final textSecondary = hex('808080');
+
+  final neutralGrey = hex('ADADAD');
 }
 
 Color hex(String hex) {

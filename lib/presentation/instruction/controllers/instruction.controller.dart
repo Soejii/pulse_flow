@@ -40,7 +40,7 @@ class InstructionController extends GetxController {
   }
 
   void finishOnboarding() {
-    Get.offNamed(Routes.HOME);
+    Get.offNamed(Routes.BOTTOM_NAVIGATION);
   }
 
   final List<InstructionData> pages = const [

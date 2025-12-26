@@ -29,7 +29,7 @@ class Nav {
     GetPage(
       name: Routes.HOME,
       page: () => const HomeScreen(),
-      binding: HomeControllerBinding(),
+      binding: BottomNavigationControllerBinding(),
     ),
     GetPage(
       name: Routes.GAME,
@@ -40,6 +40,11 @@ class Nav {
       name: Routes.INSTRUCTION,
       page: () => const InstructionScreen(),
       binding: InstructionControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.BOTTOM_NAVIGATION,
+      page: () =>  BottomNavigationScreen(),
+      binding: BottomNavigationControllerBinding(),
     ),
   ];
 }
