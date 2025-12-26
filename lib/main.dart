@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
   var initialRoute = await Routes.initialRoute;
+  Get.put(ProgressController(), permanent: true);
   runApp(Main(initialRoute));
 }
 
