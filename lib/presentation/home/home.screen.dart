@@ -92,7 +92,10 @@ class HomeScreen extends GetView<HomeController> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () => Get.toNamed(Routes.GAME),
+                  onPressed: () => Get.toNamed(
+                    Routes.GAME,
+                    arguments: false,
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.themeGreen,
                     foregroundColor: Colors.black,
@@ -115,7 +118,10 @@ class HomeScreen extends GetView<HomeController> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () => Get.toNamed(Routes.GAME),
+                  onPressed: () => Get.toNamed(
+                    Routes.GAME,
+                    arguments: true,
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.themeRed,
                     foregroundColor: AppColor.textPrimary,

@@ -7,9 +7,10 @@ import 'package:pulse_flow/shared/progress/progress_controller.dart';
 class GameController extends GetxController {
   final progressController = Get.find<ProgressController>();
 
+  bool isHard = Get.arguments;
+
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     tileColors.value = List<Color?>.filled(zoneCount.value, null);
     remainingTiles = List.generate(zoneCount.value, (i) => i);
@@ -98,6 +99,9 @@ class GameController extends GetxController {
     while (remainingTiles.isNotEmpty) {
       _showColor();
       await Future.delayed(const Duration(milliseconds: 700));
+      if (isHard) {
+        tileColors.value = List<Color?>.filled(zoneCount.value, null);
+      }
     }
     isRecallPhase.value = true;
     tileColors.value = List<Color?>.filled(zoneCount.value, null);
