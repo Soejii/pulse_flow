@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pulse_flow/infrastructure/navigation/routes.dart';
 import 'package:pulse_flow/presentation/screens.dart';
+import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class InstructionController extends GetxController {
+  final progressController = Get.find<ProgressController>();
+
   late final PageController pageController;
   var currentPage = 0.obs;
 
@@ -11,6 +14,7 @@ class InstructionController extends GetxController {
   void onInit() {
     super.onInit();
     pageController = PageController();
+    checkRoute();
   }
 
   @override
@@ -40,7 +44,14 @@ class InstructionController extends GetxController {
   }
 
   void finishOnboarding() {
+    progressController.setFirstTime();
     Get.offNamed(Routes.BOTTOM_NAVIGATION);
+  }
+
+  void checkRoute() {
+    if (!progressController.state.value.isFirstTime) {
+      Get.offNamed(Routes.BOTTOM_NAVIGATION);
+    }
   }
 
   final List<InstructionData> pages = const [

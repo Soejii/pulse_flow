@@ -43,6 +43,14 @@ class ProgressController extends GetxController {
     await setProgress(state.value.copyWith(highestUnlockedLevel: level));
   }
 
+  Future<void> setFirstTime() async {
+    await setProgress(
+      state.value.copyWith(
+        isFirstTime: false,
+      ),
+    );
+  }
+
   Future<void> reset() async {
     await setProgress(ProgressModel.initial());
   }
