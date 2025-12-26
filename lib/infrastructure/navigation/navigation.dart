@@ -28,7 +28,7 @@ class Nav {
   static List<GetPage> routes = [
     GetPage(
       name: Routes.HOME,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
       binding: BottomNavigationControllerBinding(),
     ),
     GetPage(
@@ -43,7 +43,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.BOTTOM_NAVIGATION,
-      page: () =>  BottomNavigationScreen(),
+      page: () => BottomNavigationScreen(),
       binding: BottomNavigationControllerBinding(),
     ),
   ];

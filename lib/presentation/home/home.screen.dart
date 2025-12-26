@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pulse_flow/infrastructure/navigation/routes.dart';
 import 'package:pulse_flow/shared/app_color.dart';
+import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 import 'controllers/home.controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final progress = Get.find<ProgressController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,28 +64,23 @@ class HomeScreen extends GetView<HomeController> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    _progressRow("Current level", "Level 2"),
+                    Obx(
+                      () => _progressRow(
+                        "Current level",
+                        "Level ${progress.state.value.currentLevel}",
+                      ),
+                    ),
                     SizedBox(height: 6),
-                    _progressRow("Session", "2 / 3"),
+                    Obx(
+                      () => _progressRow(
+                        "Session",
+                        "${progress.state.value.currentSession} / 3",
+                      ),
+                    ),
                     SizedBox(height: 6),
-                    _progressRow("Unlocked", "Up to Level 3"),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        _dot(true),
-                        SizedBox(width: 6),
-                        _dot(true),
-                        SizedBox(width: 6),
-                        _dot(true),
-                        SizedBox(width: 10),
-                        Text(
-                          "Session progress",
-                          style: TextStyle(
-                            color: AppColor.neutralGrey,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
+                    _progressRow(
+                      "Unlocked",
+                      "Up to Level ${progress.state.value.highestUnlockedLevel}",
                     ),
                   ],
                 ),
@@ -183,16 +181,5 @@ _progressRow(
         ),
       ),
     ],
-  );
-}
-
-_dot(bool filled) {
-  return Container(
-    width: 10,
-    height: 10,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: filled ? AppColor.themeGreen : AppColor.textSecondary,
-    ),
   );
 }
