@@ -27,6 +27,8 @@ class HistoryScreen extends GetView<HistoryController> {
             children: [
               summaryCard(runs),
               const SizedBox(height: 12),
+              struggleCard(runs),
+              const SizedBox(height: 12),
               recentGraphCard(runs),
               const SizedBox(height: 12),
               recentRunsCard(runs),
@@ -226,4 +228,152 @@ class HistoryScreen extends GetView<HistoryController> {
       ],
     );
   }
+
+  struggleCard(List<HistoryModel> runs) {
+    final hotspot = _findStruggleHotspot(runs);
+
+    if (hotspot == null) {
+      return cardShell(
+        'Where you struggle most',
+        null,
+        const Text(
+          'Not enough data yet. Play a few sessions first.',
+          style: TextStyle(color: AppColor.neutralGrey),
+        ),
+      );
+    }
+
+    return cardShell(
+      'Where you struggle most',
+      'Lowest win rate by level and session',
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Hardest: Level ${hotspot.level} · Session ${hotspot.session}',
+            style: const TextStyle(
+              color: AppColor.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Win rate: ${hotspot.winRatePercent}%  ·  Avg recall: ${hotspot.avgRecallPercent}%',
+            style: const TextStyle(color: AppColor.neutralGrey, fontSize: 12),
+          ),
+          const SizedBox(height: 12),
+
+          // tiny bar visualization (still card vibe)
+          Container(
+            height: 10,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColor.themeDarkerBlue,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: (hotspot.winRatePercent / 100).clamp(0.0, 1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColor.themeRed,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Red bar shows win rate (lower means harder).',
+            style: TextStyle(color: AppColor.textSecondary, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _StruggleHotspot? _findStruggleHotspot(List<HistoryModel> runs) {
+    // Need at least a few runs to avoid nonsense
+    if (runs.length < 5) return null;
+
+    // group by "level-session"
+    final Map<String, List<HistoryModel>> groups = {};
+
+    for (final r in runs) {
+      final key = '${r.level}-${r.session}';
+      groups.putIfAbsent(key, () => []);
+      groups[key]!.add(r);
+    }
+
+    _StruggleHotspot? worst;
+
+    for (final entry in groups.entries) {
+      final group = entry.value;
+
+      // ignore tiny samples so it does not accuse the user unfairly
+      if (group.length < 3) continue;
+
+      final level = group.first.level;
+      final session = group.first.session;
+
+      final wins = group.where((e) => e.result == RunResult.success).length;
+      final total = group.length;
+
+      final winRate = total == 0 ? 0.0 : wins / total;
+
+      double sumRecall = 0.0;
+      int recallCount = 0;
+      for (final g in group) {
+        if (g.target > 0) {
+          sumRecall += (g.remembered / g.target).clamp(0.0, 1.0);
+          recallCount++;
+        }
+      }
+      final avgRecall = recallCount == 0 ? 0.0 : (sumRecall / recallCount);
+
+      final candidate = _StruggleHotspot(
+        level: level,
+        session: session,
+        winRate: winRate,
+        avgRecall: avgRecall,
+      );
+
+      if (worst == null) {
+        worst = candidate;
+        continue;
+      }
+
+      // primary: lower win rate is worse
+      if (candidate.winRate < worst.winRate) {
+        worst = candidate;
+        continue;
+      }
+
+      // tie breaker: lower avg recall is worse
+      if (candidate.winRate == worst.winRate &&
+          candidate.avgRecall < worst.avgRecall) {
+        worst = candidate;
+      }
+    }
+
+    return worst;
+  }
+}
+
+class _StruggleHotspot {
+  final int level;
+  final int session;
+  final double winRate;
+  final double avgRecall;
+
+  const _StruggleHotspot({
+    required this.level,
+    required this.session,
+    required this.winRate,
+    required this.avgRecall,
+  });
+
+  int get winRatePercent => (winRate * 100).round();
+  int get avgRecallPercent => (avgRecall * 100).round();
 }
