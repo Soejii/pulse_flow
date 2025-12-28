@@ -2,10 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pulse_flow/presentation/history/controllers/history.controller.dart';
+import 'package:pulse_flow/presentation/history/models/history_model.dart';
 import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class GameController extends GetxController {
   final progressController = Get.find<ProgressController>();
+  final historyController = Get.find<HistoryController>();
 
   bool isHard = Get.arguments;
 
@@ -224,6 +227,18 @@ class GameController extends GetxController {
                 currentWinning = 0;
               }
 
+              historyController.addHistory(
+                HistoryModel(
+                  timestamp: DateTime.now(),
+                  level: currentLevel,
+                  session: currentWinning + 1,
+                  gridSize: zoneCount.value,
+                  remembered: playerSequenceList.length,
+                  target: correctSequenceList.length,
+                  result: RunResult.success,
+                ),
+              );
+
               progressController.setProgress(
                 progressController.state.value.copyWith(
                   currentLevel: currentLevel,
@@ -278,6 +293,19 @@ class GameController extends GetxController {
             onPressed: () {
               resetRunState();
               _reinitBoard();
+
+              historyController.addHistory(
+                HistoryModel(
+                  timestamp: DateTime.now(),
+                  level: currentLevel,
+                  session: currentWinning + 1,
+                  gridSize: zoneCount.value,
+                  remembered: playerSequenceList.length,
+                  target: correctSequenceList.length,
+                  result: RunResult.fail,
+                ),
+              );
+
               Get.back();
             },
             style: ElevatedButton.styleFrom(

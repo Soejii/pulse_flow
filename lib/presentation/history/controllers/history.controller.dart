@@ -27,10 +27,11 @@ class HistoryController extends GetxController {
 
   void addHistory(HistoryModel model) {
     listHistory.add(model);
+    _storage.saveAll(listHistory);
   }
 
   void loadHistory() async {
-   listHistory.value = await _storage.load();
+    listHistory.value = await _storage.load();
     isLoaded.value = true;
   }
 }
