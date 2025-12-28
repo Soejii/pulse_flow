@@ -48,8 +48,13 @@ class Nav {
     ),
     GetPage(
       name: Routes.GATE,
-      page: () =>  GateScreen(),
+      page: () => GateScreen(),
       binding: GateControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.HISTORY,
+      page: () => const HistoryScreen(),
+      binding: HistoryControllerBinding(),
     ),
   ];
 }
