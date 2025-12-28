@@ -122,7 +122,7 @@ class HistoryScreen extends GetView<HistoryController> {
   recentRunsCard(
     List<HistoryModel> runs,
   ) {
-    final recent = runs.take(5).toList();
+    final recent = runs.reversed.take(5).toList();
     return cardShell(
       'Recent runs',
       null,
