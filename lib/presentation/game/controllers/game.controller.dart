@@ -22,9 +22,9 @@ class GameController extends GetxController {
 
     final s = progressController.state.value;
 
-    currentLevel = s.currentLevel;
-    currentWinning = s.currentSession - 1;
-    zoneCount.value = zoneCountList[currentLevel - 1];
+    currentLevel.value = s.currentLevel;
+    currentWinning.value = s.currentSession - 1;
+    zoneCount.value = zoneCountList[currentLevel.value - 1];
 
     resetRunState();
     _reinitBoard();
@@ -55,9 +55,9 @@ class GameController extends GetxController {
   var zoneCount = 9.obs;
   List<int> remainingTiles = [];
 
-  int currentWinning = 0;
+  RxInt currentWinning = 0.obs;
   int needsToWin = 3;
-  int currentLevel = 1;
+  RxInt currentLevel = 1.obs;
   List<int> zoneCountList = [9, 16, 25, 36];
   final targetGreenCountRange = [(3, 6), (5, 9), (7, 13), (10, 18)];
 
@@ -81,7 +81,7 @@ class GameController extends GetxController {
     currentGreenCount = 0;
     isRecallPhase.value = false;
     distractorFailStreak = 0;
-    final range = targetGreenCountRange[currentLevel - 1];
+    final range = targetGreenCountRange[currentLevel.value - 1];
     targetGreenCount = range.$1 + _random.nextInt(range.$2 - range.$1 + 1);
     isStarted = false;
   }
@@ -92,7 +92,7 @@ class GameController extends GetxController {
   }
 
   void setLevel(int levelIndex) async {
-    currentLevel = levelIndex;
+    currentLevel.value = levelIndex;
     await progressController.setCurrentLevel(levelIndex);
     zoneCount.value = zoneCountList[levelIndex - 1];
     resetRunState();
@@ -128,7 +128,7 @@ class GameController extends GetxController {
           _showSuccessDialog();
         }
       } else {
-        currentWinning = 0;
+        currentWinning.value = 0;
         failSound();
         _showFailedDialog();
       }
@@ -236,16 +236,16 @@ class GameController extends GetxController {
         actions: [
           ElevatedButton(
             onPressed: () {
-              if (currentWinning == needsToWin) {
-                setLevel(currentLevel + 1);
-                currentWinning = 0;
+              if (currentWinning.value == needsToWin) {
+                setLevel(currentLevel.value + 1);
+                currentWinning.value = 0;
               }
 
               historyController.addHistory(
                 HistoryModel(
                   timestamp: DateTime.now(),
-                  level: currentLevel,
-                  session: currentWinning + 1,
+                  level: currentLevel.value,
+                  session: currentWinning.value + 1,
                   gridSize: zoneCount.value,
                   remembered: playerSequenceList.length,
                   target: correctSequenceList.length,
@@ -255,11 +255,11 @@ class GameController extends GetxController {
 
               progressController.setProgress(
                 progressController.state.value.copyWith(
-                  currentLevel: currentLevel,
-                  currentSession: currentWinning + 1,
+                  currentLevel: currentLevel.value,
+                  currentSession: currentWinning.value + 1,
                   highestUnlockedLevel: max(
                     progressController.state.value.highestUnlockedLevel,
-                    currentLevel,
+                    currentLevel.value,
                   ),
                 ),
               );
@@ -307,8 +307,8 @@ class GameController extends GetxController {
               historyController.addHistory(
                 HistoryModel(
                   timestamp: DateTime.now(),
-                  level: currentLevel,
-                  session: currentWinning,
+                  level: currentLevel.value,
+                  session: currentWinning.value,
                   gridSize: zoneCount.value,
                   remembered: playerSequenceList.length,
                   target: correctSequenceList.length,
