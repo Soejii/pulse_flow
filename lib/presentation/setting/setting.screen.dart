@@ -15,7 +15,6 @@ class SettingScreen extends GetView<SettingController> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const SizedBox(height: 32),
             cardShell(
               'Audio',
               null,
@@ -61,7 +60,7 @@ class SettingScreen extends GetView<SettingController> {
                         message: 'This will reset your level and session.',
                       );
                       if (!ok) return;
-      
+
                       await controller.progress.reset();
                       Get.snackbar(
                         'Done',
@@ -81,7 +80,7 @@ class SettingScreen extends GetView<SettingController> {
                         message: 'This will delete all history runs.',
                       );
                       if (!ok) return;
-      
+
                       await controller.history.clear();
                       Get.snackbar(
                         'Done',
