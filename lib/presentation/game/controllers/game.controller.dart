@@ -31,12 +31,6 @@ class GameController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-    _instructionDialog();
-  }
-
-  @override
   void onClose() {
     super.onClose();
   }
@@ -219,7 +213,7 @@ class GameController extends GetxController {
     Get.dialog(
       AlertDialog(
         title: Text(
-          'Sesi Berakhir',
+          'Session Ended',
           style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -227,8 +221,8 @@ class GameController extends GetxController {
         ),
         content: Text(
           currentSession.value == 4
-              ? 'Lanjut Ke Level Berikutnya?'
-              : 'Anda Menang ${currentSession.value - 1} dari $needsToWin sesi yang ada',
+              ? 'Proceed to the next level?'
+              : 'You won ${currentSession.value - 1} out of $needsToWin session',
           style: Theme.of(Get.context!).textTheme.bodyMedium,
         ),
         actions: [
@@ -274,7 +268,7 @@ class GameController extends GetxController {
               elevation: 10,
             ),
             child: const Text(
-              'OK',
+              'OK!',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -290,14 +284,14 @@ class GameController extends GetxController {
     Get.dialog(
       AlertDialog(
         title: Text(
-          'Permainan Selesai',
+          'Game Over!',
           style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
         ),
         content: Text(
-          'Kamu Mengingat ${playerSequenceList.length} dari ${correctSequenceList.length}',
+          'You remembered ${playerSequenceList.length} out of ${correctSequenceList.length} tiles',
           style: Theme.of(Get.context!).textTheme.bodyMedium,
         ),
         actions: [
@@ -317,46 +311,6 @@ class GameController extends GetxController {
               resetRunState();
               _reinitBoard();
 
-              Get.back();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF00E676),
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              elevation: 10,
-            ),
-            child: const Text(
-              'OK',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  void _instructionDialog() {
-    if (Get.context == null) return;
-
-    Get.dialog(
-      AlertDialog(
-        title: Text(
-          'Perhatian!',
-          style: Theme.of(Get.context!).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-        ),
-        content: Text(
-          'Ketuk Dimana Saja Dalam Kotak Untuk Memulai Permainan',
-          style: Theme.of(Get.context!).textTheme.bodyMedium,
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
               Get.back();
             },
             style: ElevatedButton.styleFrom(
