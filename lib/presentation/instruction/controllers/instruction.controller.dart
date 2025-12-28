@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pulse_flow/infrastructure/navigation/routes.dart';
 import 'package:pulse_flow/presentation/screens.dart';
+import 'package:pulse_flow/shared/audio/audio_service.dart';
 import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class InstructionController extends GetxController {
   final progressController = Get.find<ProgressController>();
+  final audio = Get.find<AudioService>();
 
   late final PageController pageController;
   var currentPage = 0.obs;
@@ -44,6 +46,7 @@ class InstructionController extends GetxController {
 
   void finishOnboarding() {
     progressController.setFirstTime();
+    audio.playMusic();
     Get.offNamed(Routes.BOTTOM_NAVIGATION);
   }
 

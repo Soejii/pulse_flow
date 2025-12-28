@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pulse_flow/presentation/history/controllers/history.controller.dart';
 import 'package:pulse_flow/presentation/history/models/history_model.dart';
+import 'package:pulse_flow/shared/audio/audio_service.dart';
 import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class GameController extends GetxController {
   final progressController = Get.find<ProgressController>();
   final historyController = Get.find<HistoryController>();
+  final audio = Get.find<AudioService>();
 
   bool isHard = Get.arguments;
 
@@ -122,11 +124,12 @@ class GameController extends GetxController {
         playerSequenceList.add(tappedIndex);
         if (correctSequenceList.length == playerSequenceList.length) {
           currentWinning++;
-          await progressController.setSession(currentWinning);
+          successSound();
           _showSuccessDialog();
         }
       } else {
         currentWinning = 0;
+        failSound();
         _showFailedDialog();
       }
     } else {
@@ -201,9 +204,20 @@ class GameController extends GetxController {
     }
   }
 
-  void _showSuccessDialog() {
-    if (Get.context == null) return;
+  tapSound() {
+    audio.playTap();
+  }
 
+  successSound() {
+    audio.playSuccess();
+  }
+
+  failSound() {
+    audio.playFail();
+  }
+
+  void _showSuccessDialog() async {
+    if (Get.context == null) return;
     Get.dialog(
       AlertDialog(
         title: Text(
@@ -272,9 +286,8 @@ class GameController extends GetxController {
     );
   }
 
-  void _showFailedDialog() {
+  void _showFailedDialog() async {
     if (Get.context == null) return;
-
     Get.dialog(
       AlertDialog(
         title: Text(
@@ -293,7 +306,6 @@ class GameController extends GetxController {
             onPressed: () {
               resetRunState();
               _reinitBoard();
-
               historyController.addHistory(
                 HistoryModel(
                   timestamp: DateTime.now(),
