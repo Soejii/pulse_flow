@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
+import 'package:pulse_flow/presentation/history/controllers/history.controller.dart';
+import 'package:pulse_flow/shared/audio/audio_service.dart';
+import 'package:pulse_flow/shared/progress/progress_controller.dart';
 
 class SettingController extends GetxController {
-  //TODO: Implement SettingController
+  final audio = Get.find<AudioService>();
+  final progress = Get.find<ProgressController>();
+      final history = Get.find<HistoryController>();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +22,4 @@ class SettingController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

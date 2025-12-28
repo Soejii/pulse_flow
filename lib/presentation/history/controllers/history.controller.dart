@@ -34,4 +34,8 @@ class HistoryController extends GetxController {
     listHistory.value = await _storage.load();
     isLoaded.value = true;
   }
+
+   clear() async {
+ await   _storage.clear();
+  }
 }

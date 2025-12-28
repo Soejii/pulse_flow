@@ -13,11 +13,7 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
   final _tabs = [
     HomeScreen(),
     HistoryScreen(),
-    Column(
-      children: [
-        Center(child: Text('this is settings')),
-      ],
-    ),
+    SettingScreen(),
   ];
 
   @override
