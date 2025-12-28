@@ -30,12 +30,14 @@ class HistoryController extends GetxController {
     _storage.saveAll(listHistory);
   }
 
-  void loadHistory() async {
+  loadHistory() async {
     listHistory.value = await _storage.load();
     isLoaded.value = true;
   }
 
-   clear() async {
- await   _storage.clear();
+  clear() async {
+    await _storage.clear();
+    await _storage.load();
+    await loadHistory();
   }
 }

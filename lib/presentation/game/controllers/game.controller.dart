@@ -310,7 +310,7 @@ class GameController extends GetxController {
                 HistoryModel(
                   timestamp: DateTime.now(),
                   level: currentLevel,
-                  session: currentWinning + 1,
+                  session: currentWinning,
                   gridSize: zoneCount.value,
                   remembered: playerSequenceList.length,
                   target: correctSequenceList.length,

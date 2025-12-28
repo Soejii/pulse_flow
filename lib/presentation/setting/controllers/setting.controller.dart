@@ -6,7 +6,7 @@ import 'package:pulse_flow/shared/progress/progress_controller.dart';
 class SettingController extends GetxController {
   final audio = Get.find<AudioService>();
   final progress = Get.find<ProgressController>();
-      final history = Get.find<HistoryController>();
+  final history = Get.find<HistoryController>();
 
   @override
   void onInit() {
