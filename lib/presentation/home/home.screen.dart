@@ -164,6 +164,27 @@ class HomeScreen extends GetView<HomeController> {
                   child: const Text("Level select"),
                 ),
               ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 56,
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.INSTRUCTION);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColor.textPrimary,
+                    side: BorderSide(
+                      color: AppColor.textSecondary,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text("Instruction"),
+                ),
+              ),
             ],
           ),
         ),
