@@ -9,8 +9,6 @@ import 'controllers/home.controller.dart';
 class HomeScreen extends GetView<HomeController> {
   HomeScreen({super.key});
 
-  final progress = Get.find<ProgressController>();
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -67,21 +65,21 @@ class HomeScreen extends GetView<HomeController> {
                     Obx(
                       () => _progressRow(
                         "Current level",
-                        "Level ${progress.state.value.currentLevel}",
+                        "Level ${controller.progress.state.value.currentLevel}",
                       ),
                     ),
                     SizedBox(height: 6),
                     Obx(
                       () => _progressRow(
                         "Session",
-                        "${progress.state.value.currentSession} / 3",
+                        "${controller.progress.state.value.currentSession} / 3",
                       ),
                     ),
                     SizedBox(height: 6),
                     Obx(
                       () => _progressRow(
                         "Unlocked",
-                        "Up to Level ${progress.state.value.highestUnlockedLevel}",
+                        "Up to Level ${controller.progress.state.value.highestUnlockedLevel}",
                       ),
                     ),
                   ],
@@ -92,10 +90,13 @@ class HomeScreen extends GetView<HomeController> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () => Get.toNamed(
-                    Routes.GAME,
-                    arguments: false,
-                  ),
+                  onPressed: () {
+                    controller.audio.playMusic();
+                    Get.toNamed(
+                      Routes.GAME,
+                      arguments: false,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.themeGreen,
                     foregroundColor: Colors.black,
@@ -118,10 +119,13 @@ class HomeScreen extends GetView<HomeController> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () => Get.toNamed(
-                    Routes.GAME,
-                    arguments: true,
-                  ),
+                  onPressed: () {
+                    controller.audio.playMusic();
+                    Get.toNamed(
+                      Routes.GAME,
+                      arguments: true,
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.themeRed,
                     foregroundColor: AppColor.textPrimary,
