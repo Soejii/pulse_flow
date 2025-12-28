@@ -131,8 +131,8 @@ class _TopHud extends StatelessWidget {
           Expanded(
             child: Obx(() {
               final level = controller.currentLevel;
-              final session = (controller.currentWinning + 1)
-                  .clamp(1, controller.needsToWin);
+              final session =
+                  (controller.currentSession).clamp(1, controller.needsToWin);
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

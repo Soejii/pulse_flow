@@ -23,7 +23,7 @@ class GameController extends GetxController {
     final s = progressController.state.value;
 
     currentLevel.value = s.currentLevel;
-    currentWinning.value = s.currentSession - 1;
+    currentSession.value = s.currentSession;
     zoneCount.value = zoneCountList[currentLevel.value - 1];
 
     resetRunState();
@@ -32,14 +32,12 @@ class GameController extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
     super.onReady();
     _instructionDialog();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
   }
 
@@ -55,7 +53,7 @@ class GameController extends GetxController {
   var zoneCount = 9.obs;
   List<int> remainingTiles = [];
 
-  RxInt currentWinning = 0.obs;
+  RxInt currentSession = 1.obs;
   int needsToWin = 3;
   RxInt currentLevel = 1.obs;
   List<int> zoneCountList = [9, 16, 25, 36];
@@ -123,13 +121,11 @@ class GameController extends GetxController {
       if (correctSequenceList[playerSequenceList.length] == tappedIndex) {
         playerSequenceList.add(tappedIndex);
         if (correctSequenceList.length == playerSequenceList.length) {
-          currentWinning++;
-          successSound();
+          currentSession++;
           _showSuccessDialog();
         }
       } else {
-        currentWinning.value = 0;
-        failSound();
+        currentSession.value = 1;
         _showFailedDialog();
       }
     } else {
@@ -218,6 +214,8 @@ class GameController extends GetxController {
 
   void _showSuccessDialog() async {
     if (Get.context == null) return;
+    successSound();
+
     Get.dialog(
       AlertDialog(
         title: Text(
@@ -228,24 +226,24 @@ class GameController extends GetxController {
               ),
         ),
         content: Text(
-          currentWinning == needsToWin
+          currentSession.value == 4
               ? 'Lanjut Ke Level Berikutnya?'
-              : 'Anda Menang $currentWinning dari $needsToWin sesi yang ada',
+              : 'Anda Menang ${currentSession.value - 1} dari $needsToWin sesi yang ada',
           style: Theme.of(Get.context!).textTheme.bodyMedium,
         ),
         actions: [
           ElevatedButton(
             onPressed: () {
-              if (currentWinning.value == needsToWin) {
+              if (currentSession.value == 4) {
                 setLevel(currentLevel.value + 1);
-                currentWinning.value = 0;
+                currentSession.value = 1;
               }
 
               historyController.addHistory(
                 HistoryModel(
                   timestamp: DateTime.now(),
                   level: currentLevel.value,
-                  session: currentWinning.value + 1,
+                  session: currentSession.value,
                   gridSize: zoneCount.value,
                   remembered: playerSequenceList.length,
                   target: correctSequenceList.length,
@@ -256,7 +254,7 @@ class GameController extends GetxController {
               progressController.setProgress(
                 progressController.state.value.copyWith(
                   currentLevel: currentLevel.value,
-                  currentSession: currentWinning.value + 1,
+                  currentSession: currentSession.value,
                   highestUnlockedLevel: max(
                     progressController.state.value.highestUnlockedLevel,
                     currentLevel.value,
@@ -288,6 +286,7 @@ class GameController extends GetxController {
 
   void _showFailedDialog() async {
     if (Get.context == null) return;
+    failSound();
     Get.dialog(
       AlertDialog(
         title: Text(
@@ -308,7 +307,7 @@ class GameController extends GetxController {
                 HistoryModel(
                   timestamp: DateTime.now(),
                   level: currentLevel.value,
-                  session: currentWinning.value,
+                  session: currentSession.value,
                   gridSize: zoneCount.value,
                   remembered: playerSequenceList.length,
                   target: correctSequenceList.length,

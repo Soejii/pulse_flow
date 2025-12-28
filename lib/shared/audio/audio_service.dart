@@ -15,9 +15,9 @@ class AudioService {
     await _bgm.setLoopMode(LoopMode.one);
     await _bgm.setAsset('assets/audio/music.wav');
 
-    await _tap.setAsset('assets/audio/tap.mpeg');
+    await _tap.setAsset('assets/audio/tap.mp3');
     await _success.setAsset('assets/audio/success.mp3');
-    await _fail.setAsset('assets/audio/lose.mpeg');
+    await _fail.setAsset('assets/audio/lose.mp3');
   }
 
   Future<void> playMusic() async {
@@ -33,18 +33,21 @@ class AudioService {
 
   Future<void> playTap() async {
     if (!sfxEnabled.value) return;
+    await _tap.stop();
     await _tap.seek(Duration.zero);
     await _tap.play();
   }
 
   Future<void> playSuccess() async {
     if (!sfxEnabled.value) return;
+    await _success.stop();
     await _success.seek(Duration.zero);
     await _success.play();
   }
 
   Future<void> playFail() async {
     if (!sfxEnabled.value) return;
+    await _fail.stop();
     await _fail.seek(Duration.zero);
     await _fail.play();
   }
