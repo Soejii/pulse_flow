@@ -304,8 +304,6 @@ class GameController extends GetxController {
         actions: [
           ElevatedButton(
             onPressed: () {
-              resetRunState();
-              _reinitBoard();
               historyController.addHistory(
                 HistoryModel(
                   timestamp: DateTime.now(),
@@ -317,6 +315,8 @@ class GameController extends GetxController {
                   result: RunResult.fail,
                 ),
               );
+              resetRunState();
+              _reinitBoard();
 
               Get.back();
             },
