@@ -8,7 +8,7 @@ import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
 
 void main() async {
-  var initialRoute = await Routes.initialRoute;
+  var initialRoute = Routes.GATE;
   Get.put(ProgressController(), permanent: true);
   final audio = AudioService();
   await audio.init();
