@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pulse_flow/presentation/home/home.screen.dart';
+import 'package:pulse_flow/presentation/screens.dart';
 import 'package:pulse_flow/shared/app_color.dart';
 import 'package:pulse_flow/shared/star_background.dart';
 
@@ -12,11 +12,7 @@ class BottomNavigationScreen extends GetView<BottomNavigationController> {
 
   final _tabs = [
     HomeScreen(),
-    Column(
-      children: [
-        Center(child: Text('this is history')),
-      ],
-    ),
+    HistoryScreen(),
     Column(
       children: [
         Center(child: Text('this is settings')),
