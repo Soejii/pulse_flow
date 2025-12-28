@@ -6,7 +6,7 @@ class StarBackground extends StatefulWidget {
   const StarBackground({
     super.key,
     this.starCount = 90,
-    this.speed = 0.25,
+    this.speed = 1.25,
   });
 
   final int starCount;
@@ -29,7 +29,7 @@ class _StarBackgroundState extends State<StarBackground>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 16000),
+      duration: const Duration(seconds: 300),
     )..repeat();
     _stars = <_Star>[];
   }
