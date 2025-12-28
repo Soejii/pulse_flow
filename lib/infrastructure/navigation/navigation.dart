@@ -56,5 +56,10 @@ class Nav {
       page: () => const HistoryScreen(),
       binding: BottomNavigationControllerBinding(),
     ),
+    GetPage(
+      name: Routes.SETTING,
+      page: () => const SettingScreen(),
+      binding: BottomNavigationControllerBinding(),
+    ),
   ];
 }
