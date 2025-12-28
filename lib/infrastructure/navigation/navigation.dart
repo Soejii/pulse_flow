@@ -54,7 +54,7 @@ class Nav {
     GetPage(
       name: Routes.HISTORY,
       page: () => const HistoryScreen(),
-      binding: HistoryControllerBinding(),
+      binding: BottomNavigationControllerBinding(),
     ),
   ];
 }
