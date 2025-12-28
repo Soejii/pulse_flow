@@ -63,6 +63,7 @@ class GameScreen extends GetView<GameController> {
           }
           if (controller.isRecallPhase.value) {
             controller.onTapRecallPhase(index);
+            controller.audio.playTap();
           }
         },
         child: Container(
