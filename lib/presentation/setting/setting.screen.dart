@@ -9,103 +9,108 @@ class SettingScreen extends GetView<SettingController> {
   const SettingScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        const SizedBox(height: 32),
-        cardShell(
-          'Audio',
-          null,
-          Column(
-            children: [
-              Obx(() {
-                final musicOn = controller.audio.musicEnabled;
-                return switchRow(
-                  'Music',
-                  'Background music',
-                  musicOn.value,
-                  (v) {
-                    controller.audio.setMusic(v);
-                    if (v) controller.audio.playMusic();
-                  },
-                );
-              }),
-              const SizedBox(height: 10),
-              Obx(() {
-                final sfxOn = controller.audio.sfxEnabled;
-                return switchRow(
-                  'SFX',
-                  'Tap, success, fail',
-                  sfxOn.value,
-                  (v) => controller.audio.setSfx(v),
-                );
-              }),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        cardShell(
-          'Data',
-          'Be careful, this cannot be undone',
-          Column(
-            children: [
-              actionRow(
-                'Reset progress',
-                'Back to Level 1, Session 1',
-                () async {
-                  final ok = await _confirm(
-                    title: 'Reset progress?',
-                    message: 'This will reset your level and session.',
-                  );
-                  if (!ok) return;
-
-                  await controller.progress.reset();
-                  Get.snackbar(
-                    'Done',
-                    'Progress reset.',
-                    snackPosition: SnackPosition.BOTTOM,
-                  );
-                },
-                true,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 520),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            const SizedBox(height: 32),
+            cardShell(
+              'Audio',
+              null,
+              Column(
+                children: [
+                  Obx(() {
+                    final musicOn = controller.audio.musicEnabled;
+                    return switchRow(
+                      'Music',
+                      'Background music',
+                      musicOn.value,
+                      (v) {
+                        controller.audio.setMusic(v);
+                        if (v) controller.audio.playMusic();
+                      },
+                    );
+                  }),
+                  const SizedBox(height: 10),
+                  Obx(() {
+                    final sfxOn = controller.audio.sfxEnabled;
+                    return switchRow(
+                      'SFX',
+                      'Tap, success, fail',
+                      sfxOn.value,
+                      (v) => controller.audio.setSfx(v),
+                    );
+                  }),
+                ],
               ),
-              const SizedBox(height: 10),
-              actionRow(
-                'Clear history',
-                'Remove all run logs',
-                () async {
-                  final ok = await _confirm(
-                    title: 'Clear history?',
-                    message: 'This will delete all history runs.',
-                  );
-                  if (!ok) return;
-
-                  await controller.history.clear();
-                  Get.snackbar(
-                    'Done',
-                    'History cleared.',
-                    snackPosition: SnackPosition.BOTTOM,
-                  );
-                },
-                true,
+            ),
+            const SizedBox(height: 12),
+            cardShell(
+              'Data',
+              'Be careful, this cannot be undone',
+              Column(
+                children: [
+                  actionRow(
+                    'Reset progress',
+                    'Back to Level 1, Session 1',
+                    () async {
+                      final ok = await _confirm(
+                        title: 'Reset progress?',
+                        message: 'This will reset your level and session.',
+                      );
+                      if (!ok) return;
+      
+                      await controller.progress.reset();
+                      Get.snackbar(
+                        'Done',
+                        'Progress reset.',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    },
+                    true,
+                  ),
+                  const SizedBox(height: 10),
+                  actionRow(
+                    'Clear history',
+                    'Remove all run logs',
+                    () async {
+                      final ok = await _confirm(
+                        title: 'Clear history?',
+                        message: 'This will delete all history runs.',
+                      );
+                      if (!ok) return;
+      
+                      await controller.history.clear();
+                      Get.snackbar(
+                        'Done',
+                        'History cleared.',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    },
+                    true,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 12),
+            cardShell(
+              'About',
+              null,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  aboutLine('App', 'Focus Pulse'),
+                  const SizedBox(height: 6),
+                  aboutLine('Version', '0.1.0'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
-        const SizedBox(height: 12),
-        cardShell(
-          'About',
-          null,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              aboutLine('App', 'Focus Pulse'),
-              const SizedBox(height: 6),
-              aboutLine('Version', '0.1.0'),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-      ],
+      ),
     );
   }
 

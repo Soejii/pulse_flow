@@ -10,31 +10,32 @@ class HistoryScreen extends GetView<HistoryController> {
   const HistoryScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Obx(() {
-          if (!controller.isLoaded.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final runs = controller.listHistory;
-          if (runs.isEmpty) {
-            return emptyHistory();
-          }
-
-          return ListView(
-            children: [
-              summaryCard(runs),
-              const SizedBox(height: 12),
-              struggleCard(runs),
-              const SizedBox(height: 12),
-              recentGraphCard(runs),
-              const SizedBox(height: 12),
-              recentRunsCard(runs),
-            ],
-          );
-        }),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 520),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Obx(() {
+            if (!controller.isLoaded.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final runs = controller.listHistory;
+            if (runs.isEmpty) {
+              return emptyHistory();
+            }
+            return ListView(
+              children: [
+                summaryCard(runs),
+                const SizedBox(height: 12),
+                struggleCard(runs),
+                const SizedBox(height: 12),
+                recentGraphCard(runs),
+                const SizedBox(height: 12),
+                recentRunsCard(runs),
+              ],
+            );
+          }),
+        ),
       ),
     );
   }
